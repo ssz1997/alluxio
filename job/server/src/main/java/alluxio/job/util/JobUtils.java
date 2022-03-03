@@ -144,11 +144,7 @@ public final class JobUtils {
     // This does not work for remote worker unless we have passive cache on.
     // Only use this read local first method to load if nearest worker is clear
     if (netAddress.size() <= 1 && pinnedLocation.isEmpty() && status.isPersisted()) {
-      AlluxioProperties prop = context.getClusterConf().copyProperties();
-      prop.set(PropertyKey.USER_FILE_PASSIVE_CACHE_ENABLED, "true");
-      AlluxioConfiguration config = new InstancedConfiguration(prop);
-      FileSystemContext loadContext = FileSystemContext.create(config);
-      AlluxioBlockStore blockStore = AlluxioBlockStore.create(loadContext);
+      AlluxioBlockStore blockStore = AlluxioBlockStore.create(context);
       OpenFilePOptions openOptions =
           OpenFilePOptions.newBuilder().setReadType(ReadPType.CACHE).build();
       InStreamOptions inOptions = new InStreamOptions(status, openOptions, conf);
