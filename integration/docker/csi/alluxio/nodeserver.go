@@ -202,7 +202,7 @@ func (ns *nodeServer) NodeStageVolume(ctx context.Context, req *csi.NodeStageVol
 	}
 	for i:= 0; i < retry; i++ {
 		time.Sleep(time.Duration(timeout) * time.Second)
-		command := exec.Command("bash", "-c", fmt.Sprintf("mount | grep %v | grep alluxio-fuse", req.GetStagingTargetPath()))
+		command := exec.Command("bash", "-c", fmt.Sprintf("cat /proc/mounts | grep %v | grep alluxio-fuse", req.GetStagingTargetPath()))
 		stdout, err := command.CombinedOutput()
 		if err != nil {
 			glog.V(3).Infoln(fmt.Sprintf("Alluxio is not mounted in %v seconds.", i * timeout))
