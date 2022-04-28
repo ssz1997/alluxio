@@ -59,10 +59,10 @@ public class Environment {
   }
 
   public static boolean is64Bit() {
-    if (ARCH.indexOf("sparcv9") >= 0) {
+    if (ARCH.contains("sparcv9")) {
       return true;
     }
-    return ARCH.indexOf("64") >= 0;
+    return ARCH.contains("64");
   }
 
   public static String getSharedLibraryName(final String name) {

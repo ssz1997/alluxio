@@ -22,7 +22,8 @@ public enum Errno {
   ENOEXEC(8),
   EBADF(9),
   ECHILD(10),
-  EDEADLK(35),
+  EWOULDBLOCK(11),
+  EAGAIN(11),
   ENOMEM(12),
   EACCES(13),
   EFAULT(14),
@@ -46,10 +47,26 @@ public enum Errno {
   EPIPE(32),
   EDOM(33),
   ERANGE(34),
-  EWOULDBLOCK(11),
-  EAGAIN(11),
-  EINPROGRESS(115),
-  EALREADY(114),
+  EDEADLK(35),
+  ENAMETOOLONG(36),
+  ENOLCK(37),
+  ENOSYS(38),
+  ENOTEMPTY(39),
+  ELOOP(40),
+  ENOMSG(42),
+  EIDRM(43),
+  ENOSTR(60),
+  ENODATA(61),
+  ETIME(62),
+  ENOSR(63),
+  EREMOTE(66),
+  ENOLINK(67),
+  EPROTO(71),
+  EMULTIHOP(72),
+  EBADMSG(74),
+  EOVERFLOW(75),
+  EILSEQ(84),
+  EUSERS(87),
   ENOTSOCK(88),
   EDESTADDRREQ(89),
   EMSGSIZE(90),
@@ -74,38 +91,21 @@ public enum Errno {
   ETOOMANYREFS(109),
   ETIMEDOUT(110),
   ECONNREFUSED(111),
-  ELOOP(40),
-  ENAMETOOLONG(36),
   EHOSTDOWN(112),
   EHOSTUNREACH(113),
-  ENOTEMPTY(39),
-  EUSERS(87),
-  EDQUOT(122),
+  EALREADY(114),
+  EINPROGRESS(115),
   ESTALE(116),
-  EREMOTE(66),
-  ENOLCK(37),
-  ENOSYS(38),
-  EOVERFLOW(75),
-  EIDRM(43),
-  ENOMSG(42),
-  EILSEQ(84),
-  EBADMSG(74),
-  EMULTIHOP(72),
-  ENODATA(61),
-  ENOLINK(67),
-  ENOSR(63),
-  ENOSTR(60),
-  EPROTO(71),
-  ETIME(62);
-  private final int value;
-  private Errno(int value) { this.value = value; }
-  public static final long MIN_VALUE = 1;
+  EDQUOT(122);
+
   public static final long MAX_VALUE = 122;
+  private final int value;
+  Errno(int value) { this.value = value; }
 
   static final class StringTable {
     public static final java.util.Map<Errno, String> descriptions = generateTable();
     public static java.util.Map<Errno, String> generateTable() {
-      java.util.Map<Errno, String> map = new java.util.EnumMap<Errno, String>(Errno.class);
+      java.util.Map<Errno, String> map = new java.util.EnumMap<>(Errno.class);
       map.put(EPERM, "Operation not permitted");
       map.put(ENOENT, "No such file or directory");
       map.put(ESRCH, "No such process");

@@ -26,7 +26,7 @@ public class LibFuse {
     LOADED
   }
 
-  private static AtomicReference<LibraryState> libraryLoaded =
+  private static final AtomicReference<LibraryState> libraryLoaded =
       new AtomicReference<>(LibraryState.NOT_LOADED);
 
   public native int fuse_main_real(AbstractFuseFileSystem fs, int argc, String[] argv);

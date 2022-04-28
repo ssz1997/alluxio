@@ -45,12 +45,11 @@ public abstract class AbstractFuseFileSystem implements FuseFileSystem {
   // timeout to mount a JNI fuse file system in ms
   private static final int MOUNT_TIMEOUT_MS = 2000;
 
-  private final LibFuse libFuse;
+  private final LibFuse libFuse = new LibFuse();
   private final AtomicBoolean mounted = new AtomicBoolean();
   private final Path mountPoint;
 
   public AbstractFuseFileSystem(Path mountPoint) {
-    this.libFuse = new LibFuse();
     this.mountPoint = mountPoint.toAbsolutePath();
   }
 
@@ -59,7 +58,7 @@ public abstract class AbstractFuseFileSystem implements FuseFileSystem {
    *
    * @param blocking whether this command is blocking
    * @param debug whether to show debug information
-   * @param fuseOpts
+   * @param fuseOpts the fuse mount options
    */
   public void mount(boolean blocking, boolean debug, String[] fuseOpts) {
     if (!mounted.compareAndSet(false, true)) {
