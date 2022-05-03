@@ -35,12 +35,12 @@ JNIEXPORT jint JNICALL Java_alluxio_jnifuse_LibFuse_fuse_1main_1real(
   jnifuse::JniFuseFileSystem::init(env, obj);
 
   int argc = jargc;
-  LOGD("argc=%d", argc);
+  LOGI("argc=%d", argc);
   char **argv = (char **)malloc(sizeof(char *) * argc);
   for (int i = 0; i < argc; i++) {
     jstring str = (jstring)env->GetObjectArrayElement(jargv, i);
     argv[i] = (char *)env->GetStringUTFChars(str, 0);
-    LOGD("argv[%d]=%s", i, argv[i]);
+    LOGI("argv[%d]=%s", i, argv[i]);
   }
 
   jnifuse_oper.init = init_wrapper;
@@ -76,7 +76,7 @@ JNIEXPORT jint JNICALL Java_alluxio_jnifuse_LibFuse_fuse_1main_1real(
 
   conn_info_opts = fuse_parse_conn_info_opts(&args);
 
-  LOGD("%d", args.argc);
+  LOGI("%d", args.argc);
 
   int ret = fuse_main_real(args.argc, args.argv, &jnifuse_oper,
                            sizeof(struct fuse_operations), NULL);
