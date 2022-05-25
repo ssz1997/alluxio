@@ -137,6 +137,16 @@ public final class LocalFileDataReader implements DataReader {
         String workerDir = conf.getString(PropertyKey.WORKER_DATA_FOLDER);
         mPath = Paths.get(storageDir, workerDir, Long.toString(blockId)).toString();
         LOG.info("LocalFileDataReader is reading block id {}. The path is {}.", blockId, mPath);
+        if (!Files.exists(Paths.get(storageDir))) {
+          LOG.info("LocalFileDataReader - storageDir does not exist. {}", storageDir);
+        }
+        if (!Files.exists(Paths.get(storageDir, workerDir))) {
+          LOG.info("LocalFileDataReader - workerDir does not exist. {}",
+              Paths.get(storageDir, workerDir));
+        }
+        if (!Files.exists(Paths.get(mPath))) {
+          LOG.info("LocalFileDataReader - block does not exist. {}", mPath);
+        }
         return;
       }
 
