@@ -122,6 +122,10 @@ public class BlockInStream extends InputStream implements BoundedStream, Seekabl
     // 2. alluxio.user.short.circuit.enabled is true
     // 3. the worker's domain socket is not configured
     //      OR alluxio.user.short.circuit.preferred is true
+    LOG.info("dataSourceType: " + dataSourceType.toString());
+    LOG.info("shortCircuit enabled: " + shortCircuit);
+    LOG.info("shortCircuitPreferred: " + shortCircuitPreferred);
+    LOG.info("sourceSupportsDomainSocket: " + sourceSupportsDomainSocket);
     if (sourceIsLocal && shortCircuit && (shortCircuitPreferred || !sourceSupportsDomainSocket)) {
       LOG.debug("Creating short circuit input stream for block {} @ {}", blockId, dataSource);
       try {

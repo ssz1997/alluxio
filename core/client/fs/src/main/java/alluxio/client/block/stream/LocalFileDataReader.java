@@ -29,6 +29,8 @@ import alluxio.worker.block.io.LocalFileBlockReader;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -41,6 +43,8 @@ import javax.annotation.concurrent.NotThreadSafe;
  */
 @NotThreadSafe
 public final class LocalFileDataReader implements DataReader {
+  private static final Logger LOG =
+      LoggerFactory.getLogger(LocalFileDataReader.class.getName());
   /** The file reader to read a local block. */
   private final LocalFileBlockReader mReader;
   private final long mEnd;
@@ -132,6 +136,7 @@ public final class LocalFileDataReader implements DataReader {
         String storageDir = conf.getString(tierDirPathConf).split(",")[0];
         String workerDir = conf.getString(PropertyKey.WORKER_DATA_FOLDER);
         mPath = Paths.get(storageDir, workerDir, Long.toString(blockId)).toString();
+        LOG.info("LocalFileDataReader is reading block id {}. The path is {}.", blockId, mPath);
         return;
       }
 
