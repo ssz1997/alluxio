@@ -10,7 +10,6 @@ jobs:
       fail-fast: false
       matrix:
         java: ["8", "11"]
-        version: ["2", "3"]
 
     runs-on: ubuntu-latest
     if: "!contains(github.event.pull_request.title, 'DOCFIX') &&
@@ -39,7 +38,8 @@ jobs:
           ALLUXIO_DOCKER_GIT_CLEAN=true \
           ALLUXIO_DOCKER_MVN_RUNTOEND=true \
           ALLUXIO_DOCKER_MVN_PROJECT_LIST=!webui,!shaded/client,!integration/tools/hms,!integration/yarn,!assembly/client,!assembly/server,!table/server/underdb/glue,!underfs/hdfs,!underfs/ozone,!underfs/adl,!underfs/abfs,!underfs/cosn,!underfs/wasb,!underfs/cos,!underfs/kodo,!underfs/oss,!underfs/swift \
-          dev/github/run_docker.sh "\"-Dtest=alluxio.client.fuse.**\""  "\"-Dalluxio.fuse.jnifuse.libfuse.version=${{ matrix.version }}\"" -pl tests
+          ALLUXIO_DOCKER_IMAGE=ssz1997/alluxio-github:jdk${{ matrix.java }} \
+          dev/github/run_docker.sh "\"-Dtest=alluxio.client.fuse.**\""  -pl tests
         timeout-minutes: 60
 
       - name: Archive artifacts
