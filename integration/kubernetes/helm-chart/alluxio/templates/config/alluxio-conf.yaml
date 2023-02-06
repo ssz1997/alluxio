@@ -131,12 +131,6 @@
     {{- if .quota }}
       {{- $workerJavaOpts = printf "%v.dirs.quota=%v" $tierName .quota | append $workerJavaOpts }}
     {{- end}}
-    {{- if .high }}
-      {{- $workerJavaOpts = printf "%v.watermark.high.ratio=%v" $tierName .high | append $workerJavaOpts }}
-    {{- end}}
-    {{- if .low }}
-      {{- $workerJavaOpts = printf "%v.watermark.low.ratio=%v" $tierName .low | append $workerJavaOpts }}
-    {{- end}}
   {{- end}}
 {{- end }}
 

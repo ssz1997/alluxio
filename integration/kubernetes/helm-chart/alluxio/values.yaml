@@ -220,7 +220,7 @@ journal:
   ##   properly configured the required Alluxio properties for Alluxio to access
   ##   the HDFS URI designated as the journal folder
   ufsType: "local"
-  #
+  #jobworkerprocess
   ## [ K8s volume options ]
   ## - required when using an EMBEDDED journal (journal.type="EMBEDDED")
   ## - required when using a local UFS journal (journal.type="UFS" and journal.ufsType="local")
@@ -402,8 +402,6 @@ tieredstore:
     path: /dev/shm
     type: emptyDir
     quota: 1Gi
-    high: 0.95
-    low: 0.7
 
 ## Proxy ##
 proxy:
