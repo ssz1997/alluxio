@@ -55,6 +55,8 @@ import alluxio.heartbeat.FixedIntervalSupplier;
 import alluxio.heartbeat.HeartbeatContext;
 import alluxio.heartbeat.HeartbeatExecutor;
 import alluxio.heartbeat.HeartbeatThread;
+import alluxio.metrics.MetricKey;
+import alluxio.metrics.MetricsSystem;
 import alluxio.network.protocol.databuffer.PooledDirectNioByteBuf;
 import alluxio.proto.dataserver.Protocol;
 import alluxio.proto.meta.DoraMeta;
@@ -286,16 +288,17 @@ public class PagedDoraWorker extends AbstractWorker implements DoraWorker {
         -1;
     boolean isRecursive = options.getRecursive();
     final Optional<ListStatusResult> resultFromCache = mMetaManager.listCached(path, isRecursive);
-
     if (resultFromCache.isPresent()
         && (syncIntervalMs < 0
         || System.nanoTime() - resultFromCache.get().mTimeStamp
         <= syncIntervalMs * Constants.MS_NANO)) {
+      MetricsSystem.counter(MetricKey.WORKER_LIST_STATUS_HIT_REQUESTS.getName()).inc();
       return resultFromCache.get().mUfsStatuses;
     }
     mMetaManager.invalidateListingCache(path);
     Optional<UfsStatus[]> ufsStatuses =
         mMetaManager.listFromUfsThenCache(path, isRecursive);
+    MetricsSystem.counter(MetricKey.WORKER_LIST_STATUS_EXTERNAL_REQUESTS.getName()).inc();
     return ufsStatuses.orElse(null);
   }
 
@@ -326,6 +329,9 @@ public class PagedDoraWorker extends AbstractWorker implements DoraWorker {
     }
     if (shouldLoad) {
       status = mMetaManager.loadFromUfs(ufsFullPath);
+      MetricsSystem.counter(MetricKey.WORKER_GET_FILE_INFO_EXTERNAL_REQUESTS.getName()).inc();
+    } else {
+      MetricsSystem.counter(MetricKey.WORKER_GET_FILE_INFO_HIT_REQUESTS.getName()).inc();
     }
 
     if (!status.isPresent()) {
