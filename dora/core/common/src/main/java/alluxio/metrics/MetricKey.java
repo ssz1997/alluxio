@@ -2207,6 +2207,16 @@ public final class MetricKey implements Comparable<MetricKey> {
           .setDescription("Total number of GetFileInfo read from external storage.")
           .setMetricType(MetricType.COUNTER)
           .build();
+  public static final MetricKey WORKER_CACHE_HIT_REQUESTS =
+      new Builder("Worker.CacheHitRequests")
+          .setDescription("Total number of requests read from cache.")
+          .setMetricType(MetricType.COUNTER)
+          .build();
+  public static final MetricKey WORKER_CACHE_EXTERNAL_REQUESTS =
+      new Builder("Worker.CacheExternalRequests")
+          .setDescription("Total number of requests read from external storage.")
+          .setMetricType(MetricType.COUNTER)
+          .build();
 
   // Client metrics
   public static final MetricKey CLIENT_BLOCK_READ_CHUNK_REMOTE =
