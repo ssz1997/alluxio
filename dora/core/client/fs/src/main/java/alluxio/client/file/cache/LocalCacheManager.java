@@ -209,6 +209,7 @@ public class LocalCacheManager implements CacheManager {
         DataFileChannel dataFileChannel = pageInfo.getLocalCacheDir().getPageStore()
             .getDataFileChannel(pageInfo.getPageId(), pageOffset, bytesToRead,
                 cacheContext.isTemporary());
+        MetricsSystem.counter(MetricKey.CLIENT_CACHE_HIT_REQUESTS.getName()).inc();
         MetricsSystem.meter(MetricKey.CLIENT_CACHE_BYTES_READ_CACHE.getName()).mark(bytesToRead);
         cacheContext.incrementCounter(MetricKey.CLIENT_CACHE_BYTES_READ_CACHE.getMetricName(), BYTE,
             bytesToRead);
@@ -619,6 +620,8 @@ public class LocalCacheManager implements CacheManager {
         }
         return -1;
       }
+      MetricsSystem.counter(MetricKey.CLIENT_CACHE_HIT_REQUESTS.getName()).inc();
+      MetricsSystem.counter(MetricKey.WORKER_CACHE_HIT_REQUESTS.getName()).inc();
       MetricsSystem.meter(MetricKey.CLIENT_CACHE_BYTES_READ_CACHE.getName()).mark(bytesRead);
       cacheContext.incrementCounter(MetricKey.CLIENT_CACHE_BYTES_READ_CACHE.getMetricName(), BYTE,
           bytesRead);
@@ -637,7 +640,9 @@ public class LocalCacheManager implements CacheManager {
     int bytesRead = get(pageId, pageOffset,
         bytesToRead, buffer, cacheContext);
     if (bytesRead > 0) {
+      LOG.info("bytesread > 0");
       MetricsSystem.counter(MetricKey.WORKER_CACHE_HIT_REQUESTS.getName()).inc();
+      MetricsSystem.counter(MetricKey.CLIENT_CACHE_HIT_REQUESTS.getName()).inc();
       return bytesRead;
     }
     // on local cache miss, read a complete page from external storage. This will always make
@@ -655,6 +660,7 @@ public class LocalCacheManager implements CacheManager {
     MetricsSystem.meter(MetricKey.CLIENT_CACHE_BYTES_REQUESTED_EXTERNAL.getName())
         .mark(bytesToRead);
     MetricsSystem.counter(MetricKey.WORKER_CACHE_EXTERNAL_REQUESTS.getName()).inc();
+    MetricsSystem.counter(MetricKey.CLIENT_CACHE_EXTERNAL_REQUESTS.getName()).inc();
     cacheContext.incrementCounter(
         MetricKey.CLIENT_CACHE_BYTES_REQUESTED_EXTERNAL.getMetricName(), BYTE,
         bytesToRead);

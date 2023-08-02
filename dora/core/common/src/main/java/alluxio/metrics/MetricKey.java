@@ -2198,23 +2198,13 @@ public final class MetricKey implements Comparable<MetricKey> {
           .setMetricType(MetricType.COUNTER)
           .build();
   public static final MetricKey WORKER_GET_FILE_INFO_HIT_REQUESTS =
-      new Builder("Worker.GetFileInfoFromCacheCount")
+      new Builder("Worker.GetFileInfoHitRequests")
           .setDescription("Total number of GetFileInfo requests read from worker.")
           .setMetricType(MetricType.COUNTER)
           .build();
   public static final MetricKey WORKER_GET_FILE_INFO_EXTERNAL_REQUESTS =
-      new Builder("Worker.GetFileInfoFromUfsCount")
+      new Builder("Worker.GetFileInfoExternalRequests")
           .setDescription("Total number of GetFileInfo read from external storage.")
-          .setMetricType(MetricType.COUNTER)
-          .build();
-  public static final MetricKey WORKER_CACHE_HIT_REQUESTS =
-      new Builder("Worker.CacheHitRequests")
-          .setDescription("Total number of requests read from cache.")
-          .setMetricType(MetricType.COUNTER)
-          .build();
-  public static final MetricKey WORKER_CACHE_EXTERNAL_REQUESTS =
-      new Builder("Worker.CacheExternalRequests")
-          .setDescription("Total number of requests read from external storage.")
           .setMetricType(MetricType.COUNTER)
           .build();
 
@@ -2275,7 +2265,7 @@ public final class MetricKey implements Comparable<MetricKey> {
           .setIsClusterAggregated(false)
           .build();
   public static final MetricKey CLIENT_CACHE_EXTERNAL_REQUESTS =
-      new Builder("Client.CacheBytesExternalRequests")
+      new Builder("Client.CacheExternalRequests")
           .setDescription("Total number of requests to read from external storage.")
           .setMetricType(MetricType.COUNTER)
           .setIsClusterAggregated(false)
