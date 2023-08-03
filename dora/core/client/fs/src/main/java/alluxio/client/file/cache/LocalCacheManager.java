@@ -621,7 +621,6 @@ public class LocalCacheManager implements CacheManager {
         return -1;
       }
       MetricsSystem.counter(MetricKey.CLIENT_CACHE_HIT_REQUESTS.getName()).inc();
-      MetricsSystem.counter(MetricKey.WORKER_CACHE_HIT_REQUESTS.getName()).inc();
       MetricsSystem.meter(MetricKey.CLIENT_CACHE_BYTES_READ_CACHE.getName()).mark(bytesRead);
       cacheContext.incrementCounter(MetricKey.CLIENT_CACHE_BYTES_READ_CACHE.getMetricName(), BYTE,
           bytesRead);
@@ -641,7 +640,6 @@ public class LocalCacheManager implements CacheManager {
         bytesToRead, buffer, cacheContext);
     if (bytesRead > 0) {
       LOG.info("bytesread > 0");
-      MetricsSystem.counter(MetricKey.WORKER_CACHE_HIT_REQUESTS.getName()).inc();
       MetricsSystem.counter(MetricKey.CLIENT_CACHE_HIT_REQUESTS.getName()).inc();
       return bytesRead;
     }
@@ -659,7 +657,6 @@ public class LocalCacheManager implements CacheManager {
     buffer.writeBytes(page, pageOffset, bytesToRead);
     MetricsSystem.meter(MetricKey.CLIENT_CACHE_BYTES_REQUESTED_EXTERNAL.getName())
         .mark(bytesToRead);
-    MetricsSystem.counter(MetricKey.WORKER_CACHE_EXTERNAL_REQUESTS.getName()).inc();
     MetricsSystem.counter(MetricKey.CLIENT_CACHE_EXTERNAL_REQUESTS.getName()).inc();
     cacheContext.incrementCounter(
         MetricKey.CLIENT_CACHE_BYTES_REQUESTED_EXTERNAL.getMetricName(), BYTE,
